@@ -1,11 +1,287 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Мой первый сайт</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Монтаж и дизайн — Портфолио</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05070a;
+    --bg-alt:#0b1420;
+    --line:#16232f;
+    --neon:#2fd0ff;
+    --neon-dim:#1c7fa3;
+    --text:#dbe7ee;
+    --text-dim:#6d8496;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.label{font-family:'Rajdhani',sans-serif;}
+
+  canvas#rain{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.55;pointer-events:none;}
+
+  header{
+    position:relative;
+    z-index:2;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:8vh 6vw;
+    background:linear-gradient(180deg, rgba(5,7,10,0.2) 0%, rgba(5,7,10,0.9) 90%);
+  }
+  .label{
+    color:var(--neon);
+    font-size:0.95rem;
+    letter-spacing:0.35em;
+    font-weight:600;
+    margin-bottom:1.2rem;
+    opacity:0;
+    animation:boot 0.8s ease forwards 0.2s;
+  }
+  h1{
+    font-size:clamp(2.6rem, 7vw, 5.2rem);
+    font-weight:700;
+    line-height:1.05;
+    max-width:14ch;
+    text-shadow:0 0 18px rgba(47,208,255,0.25);
+    opacity:0;
+    animation:boot 0.9s ease forwards 0.5s;
+  }
+  header p{
+    margin-top:1.5rem;
+    max-width:52ch;
+    color:var(--text-dim);
+    font-size:1.05rem;
+    line-height:1.6;
+    opacity:0;
+    animation:boot 0.9s ease forwards 0.9s;
+  }
+  @keyframes boot{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .cta-row{
+    display:flex;
+    gap:1rem;
+    margin-top:2.4rem;
+    flex-wrap:wrap;
+    opacity:0;
+    animation:boot 0.9s ease forwards 1.2s;
+  }
+  .btn{
+    display:inline-block;
+    padding:0.85rem 1.8rem;
+    border-radius:2px;
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    letter-spacing:0.03em;
+    text-decoration:none;
+    transition:0.25s ease;
+  }
+  .btn-solid{
+    background:var(--neon);
+    color:#04141c;
+  }
+  .btn-solid:hover{background:#7fe3ff; box-shadow:0 0 24px rgba(47,208,255,0.5);}
+  .btn-outline{
+    border:1px solid var(--neon-dim);
+    color:var(--text);
+  }
+  .btn-outline:hover{border-color:var(--neon); color:var(--neon);}
+
+  section{position:relative; z-index:2; padding:7rem 6vw;}
+  .section-head{margin-bottom:3rem;}
+  .section-head .label{animation:none; opacity:1;}
+  .section-head h2{font-size:clamp(1.8rem,4vw,2.6rem); font-weight:700;}
+
+  #services{border-top:1px solid var(--line); background:var(--bg-alt);}
+  .service{
+    display:grid;
+    grid-template-columns:1fr 3fr;
+    gap:1.5rem;
+    padding:1.8rem 0;
+    border-top:1px solid var(--line);
+  }
+  .service:last-child{border-bottom:1px solid var(--line);}
+  .service h3{
+    font-size:1.3rem;
+    font-weight:600;
+    color:var(--neon);
+    align-self:start;
+  }
+  .service p{color:var(--text-dim); line-height:1.6;}
+
+  #portfolio{border-top:1px solid var(--line);}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
+    gap:1.4rem;
+  }
+  .card{
+    aspect-ratio:9/12;
+    background:var(--bg-alt);
+    border:1px solid var(--line);
+    border-radius:2px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--text-dim);
+    font-family:'Rajdhani',sans-serif;
+    font-size:1rem;
+    position:relative;
+    overflow:hidden;
+    transition:0.3s ease;
+  }
+  .card:hover{border-color:var(--neon-dim); color:var(--neon);}
+  .card::after{
+    content:"▶";
+    position:absolute;
+    font-size:1.6rem;
+    color:var(--neon);
+    opacity:0;
+    transition:0.3s ease;
+  }
+  .card:hover::after{opacity:1;}
+
+  #contact{
+    border-top:1px solid var(--line);
+    background:var(--bg-alt);
+    text-align:left;
+  }
+  .contact-links{display:flex; gap:1rem; flex-wrap:wrap; margin-top:2rem;}
+
+  footer{
+    padding:2.5rem 6vw;
+    border-top:1px solid var(--line);
+    color:var(--text-dim);
+    font-size:0.9rem;
+    position:relative; z-index:2;
+  }
+
+  @media(max-width:640px){
+    .service{grid-template-columns:1fr;}
+  }
+</style>
 </head>
 <body>
-  <h1>Привет, мир!</h1>
-  <p>Это мой первый сайт на GitHub Pages.</p>
+
+<canvas id="rain"></canvas>
+
+<header>
+  <div class="label">ВИДЕОМОНТАЖ · ДИЗАЙН ПРЕВЬЮ · МАРКЕТИНГ-КАРТОЧКИ</div>
+  <h1>Делаю контент,<br>который останавливает скролл</h1>
+  <p>Монтаж роликов для YouTube и TikTok, превью, обложки и карточки товаров — под ключ, быстро и по делу.</p>
+  <div class="cta-row">
+    <a href="#portfolio" class="btn btn-solid">Смотреть работы</a>
+    <a href="#contact" class="btn btn-outline">Связаться</a>
+  </div>
+</header>
+
+<section id="services">
+  <div class="section-head">
+    <div class="label">УСЛУГИ</div>
+    <h2>Чем могу помочь</h2>
+  </div>
+
+  <div class="service">
+    <h3>Видеомонтаж</h3>
+    <p>Монтаж роликов для YouTube и TikTok: нарезка, темп, звук, субтитры, переходы под формат площадки.</p>
+  </div>
+  <div class="service">
+    <h3>Превью и обложки</h3>
+    <p>Цепляющие превью для видео — те самые, из-за которых кликают.</p>
+  </div>
+  <div class="service">
+    <h3>Маркетинговые карточки</h3>
+    <p>Обработка и оформление фото товаров клиента для маркетплейсов и соцсетей.</p>
+  </div>
+  <div class="service">
+    <h3>Короткие вертикальные видео</h3>
+    <p>Reels и TikTok-формат: динамичный монтаж под удержание внимания.</p>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="section-head">
+    <div class="label">ПОРТФОЛИО</div>
+    <h2>Последние работы</h2>
+  </div>
+  <div class="grid">
+    <div class="card">Работа 1</div>
+    <div class="card">Работа 2</div>
+    <div class="card">Работа 3</div>
+    <div class="card">Работа 4</div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-head">
+    <div class="label">КОНТАКТЫ</div>
+    <h2>Давай сделаем крутой контент</h2>
+  </div>
+  <div class="contact-links">
+    <a href="https://t.me/твой_юзернейм" class="btn btn-solid">Telegram</a>
+    <a href="https://instagram.com/твой_юзернейм" class="btn btn-outline">Instagram</a>
+    <a href="mailto:твоя_почта@gmail.com" class="btn btn-outline">Email</a>
+  </div>
+</section>
+
+<footer>© 2026 Портфолио. Монтаж и дизайн контента.</footer>
+
+<script>
+const canvas = document.getElementById('rain');
+const ctx = canvas.getContext('2d');
+let w,h,drops;
+function resize(){
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function makeDrops(){
+  drops = [];
+  const count = Math.floor(w/25);
+  for(let i=0;i<count;i++){
+    drops.push({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      len: 15 + Math.random()*25,
+      speed: 4 + Math.random()*6,
+      opacity: 0.1 + Math.random()*0.3
+    });
+  }
+}
+makeDrops();
+
+function draw(){
+  ctx.clearRect(0,0,w,h);
+  ctx.strokeStyle = '#2fd0ff';
+  ctx.lineWidth = 1;
+  drops.forEach(d=>{
+    ctx.globalAlpha = d.opacity;
+    ctx.beginPath();
+    ctx.moveTo(d.x, d.y);
+    ctx.lineTo(d.x, d.y + d.len);
+    ctx.stroke();
+    d.y += d.speed;
+    if(d.y > h){ d.y = -d.len; d.x = Math.random()*w; }
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
 </body>
 </html>
